@@ -10,7 +10,6 @@ public class Library {
         this.Lib = new ArrayList<Song>();
     }
 
-    //function return type.... throw exception?
     public void addSong(String name, String artist){
         if(!checkDuplicateSong(name,artist)){
             String name1 = name.replace("|","");
@@ -20,7 +19,6 @@ public class Library {
             return;
         }
         System.out.println("Duplicate Song");
-        // throw exception?
     }
     public void addSong(String name, String artist, String album, int year){
         if(!checkDuplicateSong(name,artist)){
@@ -32,7 +30,6 @@ public class Library {
             return;
         }
         System.out.println("Duplicate Song");
-        // throw exception?
     }
     public void delete(String name, String artist){
         Lib.removeIf(s -> s.getName().equalsIgnoreCase(name) && s.getArtist().equalsIgnoreCase(artist));
@@ -55,10 +52,24 @@ public class Library {
         }
         return false;
     }
+    public ArrayList<Song>getLib(){
+        return Lib;
+    }
+    public Song getSong(int index){
+        return Lib.get(index);
+    }
+    public Song getSong(String name,String artist){
+        for(Song s : Lib){
+            if(s.getName().equalsIgnoreCase(name)&&s.getArtist().equalsIgnoreCase(artist)){
+                return s;
+            }
+        }
+        System.out.println("no song found");
+        return null;
+    }
     public void printLibrary(){
         for(Song s: Lib){
             System.out.println("Song: "+s.getName()+" Artist: "+s.getArtist());
         }
-
     }
 }
