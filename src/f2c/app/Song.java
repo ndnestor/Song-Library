@@ -1,5 +1,5 @@
 package f2c.app;
-public class Song {
+public class Song implements Comparable<Song>{
     private String name;
     private String artist;
     private String album;
@@ -13,7 +13,9 @@ public class Song {
         this.name = name;
         this.artist = artist;
         this.album = album;
-        this.year = year;
+        if(year>0){
+            this.year = year;
+        }
     }
 
     // Getter and Setter methods for name
@@ -52,6 +54,10 @@ public class Song {
         this.year = year;
     }
 
+    public int compareTo(Song song2){
+        int songName = this.name.compareToIgnoreCase(song2.getName());
+        return songName==0? this.artist.compareToIgnoreCase(song2.getArtist()) : songName;
+    }
 
     public String toString(){
         return "song name: "+name+" artist: "+ artist;
