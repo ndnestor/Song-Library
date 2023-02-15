@@ -34,6 +34,16 @@ public class Library {
     public void delete(String name, String artist){
         Lib.removeIf(s -> s.getName().equals(name) && s.getArtist().equals(artist));
     }
+    public void editSong(String prevName, String prevArtist, String newName, String newArtist ){
+        delete(prevName,prevArtist);
+        addSong(newName,newArtist);
+        sortLib(Lib);
+    }
+    public void editSong(String prevName, String prevArtist, String newName, String newArtist, String album, int year ){
+        delete(prevName,prevArtist);
+        addSong(newName,newArtist,album,year);
+        sortLib(Lib);
+    }
     public boolean checkDuplicateSong(String name, String artist){
         for(Song s: Lib){
             if(s.getName().equals(name)&&s.getArtist().equals(artist)){
