@@ -2,6 +2,11 @@ package f2c.app;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.io.File;
+import java.io.IOException;
+import java.io.FileWriter;
+import java.util.Scanner;
+import java.io.FileNotFoundException;
 
 public class Library {
     private ArrayList<Song> Lib;
@@ -67,9 +72,51 @@ public class Library {
         System.out.println("no song found");
         return null;
     }
+    public void createFile(){
+        File data = new File("Data.txt");
+        try {
+            if (data.createNewFile()) {
+                System.out.println("File created: " + data.getName());
+            } else {
+                System.out.println("File already exists.");
+            }
+        }catch (IOException e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+        }
+    }
+    public void writeFile(){
+        createFile();
+        try{
+            FileWriter writer = new FileWriter("Data.txt");
+            for(Song s :Lib){
+                writer.write(s.getName()+"'|'"+s.getArtist()+"'|'"+s.getAlbum()+"'|'"+s.getYear()+"\n");
+            }
+            writer.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+    public void readFile(){
+        try {
+            File data = new File("Data.txt");
+            Scanner reader = new Scanner(data);
+            while (reader.hasNextLine()) {
+                String line = reader.nextLine();
+                String[] objAttributes = line.split("'|'",7);
+                Lib.add(new Song(objAttributes[0],objAttributes[2],objAttributes[4].equals("null")?null:objAttributes[4],objAttributes[6].equals("0")?0:Integer.parseInt(objAttributes[6])));
+            }
+            reader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
     public void printLibrary(){
         for(Song s: Lib){
-            System.out.println("Song: "+s.getName()+" Artist: "+s.getArtist());
+            System.out.println("Song: "+s.getName()+" Artist: "+s.getArtist()+" Album: "+s.getAlbum()+" year "+s.getYear());
         }
     }
 }
