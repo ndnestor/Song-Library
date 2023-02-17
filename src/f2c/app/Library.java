@@ -9,23 +9,19 @@ import java.util.Scanner;
 import java.io.FileNotFoundException;
 
 public class Library {
-    private ArrayList<Song> Lib;
-
-    public Library(){
-        this.Lib = new ArrayList<Song>();
-    }
+    public static ArrayList<Song> Lib = new ArrayList<Song>();;
 
     //check before inserting
-    public boolean allowInsert(String name, String artist){
+    public static boolean allowInsert(String name, String artist){
         for(Song s: Lib){
             if(s.getName().equalsIgnoreCase(name)&&s.getArtist().equalsIgnoreCase(artist)){
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
-    public void addSong(String name, String artist){
+    public static void addSong(String name, String artist){
         if(allowInsert(name, artist)){
             String name1 = name.replace("|","");
             String artist1 = artist.replace("|","");
@@ -35,7 +31,7 @@ public class Library {
         }
         System.out.println("Duplicate Song");
     }
-    public void addSong(String name, String artist, String album, int year){
+    public static void addSong(String name, String artist, String album, int year){
         if(allowInsert(name, artist)){
             name = name.replace("|","");
             artist = artist.replace("|","");
@@ -46,33 +42,30 @@ public class Library {
         }
         System.out.println("Duplicate Song");
     }
-    public void delete(String name, String artist){
+    public static void delete(String name, String artist){
         Lib.removeIf(s -> s.getName().equalsIgnoreCase(name) && s.getArtist().equalsIgnoreCase(artist));
     }
 
     //check before editing
-    public boolean allowEdit(String prevName, String prevArtist, String newName, String newArtist ){
+    public static boolean allowEdit(String prevName, String prevArtist, String newName, String newArtist ){
         return allowInsert(newName,newArtist);
     }
 
-    public void editSong(String prevName, String prevArtist, String newName, String newArtist ){
+    public static void editSong(String prevName, String prevArtist, String newName, String newArtist ){
         delete(prevName,prevArtist);
         addSong(newName,newArtist);
         Collections.sort(Lib);
     }
-    public void editSong(String prevName, String prevArtist, String newName, String newArtist, String album, int year ){
+    public static void editSong(String prevName, String prevArtist, String newName, String newArtist, String album, int year ){
         delete(prevName,prevArtist);
         addSong(newName,newArtist,album,year);
         Collections.sort(Lib);
     }
 
-    public ArrayList<Song>getLib(){
-        return Lib;
-    }
-    public Song getSong(int index){
+    public static Song getSong(int index){
         return Lib.get(index);
     }
-    public Song getSong(String name,String artist){
+    public static Song getSong(String name,String artist){
         for(Song s : Lib){
             if(s.getName().equalsIgnoreCase(name)&&s.getArtist().equalsIgnoreCase(artist)){
                 return s;
@@ -81,7 +74,7 @@ public class Library {
         System.out.println("no song found");
         return null;
     }
-    public void createFile(){
+    public static void createFile(){
         File data = new File("Data.txt");
         try {
             if (data.createNewFile()) {
@@ -94,7 +87,7 @@ public class Library {
                 e.printStackTrace();
         }
     }
-    public void writeFile(){
+    public static void writeFile(){
         createFile();
         try{
             FileWriter writer = new FileWriter("Data.txt");
@@ -108,7 +101,7 @@ public class Library {
             e.printStackTrace();
         }
     }
-    public void readFile(){
+    public static void readFile(){
         try {
             File data = new File("Data.txt");
             Scanner reader = new Scanner(data);
@@ -123,7 +116,7 @@ public class Library {
             e.printStackTrace();
         }
     }
-    public void printLibrary(){
+    public static void printLibrary(){
         for(Song s: Lib){
             System.out.println(s.toString());
         }
