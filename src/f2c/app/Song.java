@@ -51,7 +51,7 @@ public class Song implements Comparable<Song>{
     }
 
     public void setYear(int year) {
-        this.year = year>0?year:null;
+        this.year = year>=0?year:-year;
     }
 
     public int compareTo(Song song2){
@@ -60,7 +60,7 @@ public class Song implements Comparable<Song>{
     }
 
     public String toString(){
-        return "song name: "+name+" artist: "+ artist;
+        return "Song Name: " + name +" Artist: "+ artist + " Album: "+ album +" year: "+ year;
     }
 
 

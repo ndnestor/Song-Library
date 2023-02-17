@@ -125,7 +125,7 @@ public class Library {
     }
     public void printLibrary(){
         for(Song s: Lib){
-            System.out.println("Song: "+s.getName()+" Artist: "+s.getArtist()+" Album: "+s.getAlbum()+" year "+s.getYear());
+            System.out.println(s.toString());
         }
     }
 }
