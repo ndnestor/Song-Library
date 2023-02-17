@@ -15,8 +15,18 @@ public class Library {
         this.Lib = new ArrayList<Song>();
     }
 
+    //check before inserting
+    public boolean allowInsert(String name, String artist){
+        for(Song s: Lib){
+            if(s.getName().equalsIgnoreCase(name)&&s.getArtist().equalsIgnoreCase(artist)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void addSong(String name, String artist){
-        if(!checkDuplicateSong(name,artist)){
+        if(allowInsert(name, artist)){
             String name1 = name.replace("|","");
             String artist1 = artist.replace("|","");
             Lib.add(new Song(name1.trim(),artist1.trim()));
@@ -26,7 +36,7 @@ public class Library {
         System.out.println("Duplicate Song");
     }
     public void addSong(String name, String artist, String album, int year){
-        if(!checkDuplicateSong(name,artist)){
+        if(allowInsert(name, artist)){
             name = name.replace("|","");
             artist = artist.replace("|","");
             album = album.replace("|","");
@@ -39,6 +49,12 @@ public class Library {
     public void delete(String name, String artist){
         Lib.removeIf(s -> s.getName().equalsIgnoreCase(name) && s.getArtist().equalsIgnoreCase(artist));
     }
+
+    //check before editing
+    public boolean allowEdit(String prevName, String prevArtist, String newName, String newArtist ){
+        return allowInsert(newName,newArtist);
+    }
+
     public void editSong(String prevName, String prevArtist, String newName, String newArtist ){
         delete(prevName,prevArtist);
         addSong(newName,newArtist);
@@ -49,14 +65,7 @@ public class Library {
         addSong(newName,newArtist,album,year);
         Collections.sort(Lib);
     }
-    public boolean checkDuplicateSong(String name, String artist){
-        for(Song s: Lib){
-            if(s.getName().equalsIgnoreCase(name)&&s.getArtist().equalsIgnoreCase(artist)){
-                return true;
-            }
-        }
-        return false;
-    }
+
     public ArrayList<Song>getLib(){
         return Lib;
     }
