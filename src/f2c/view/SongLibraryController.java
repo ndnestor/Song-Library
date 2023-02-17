@@ -3,6 +3,8 @@ package f2c.view;
 import f2c.app.Library;
 import f2c.app.Song;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
@@ -50,14 +52,20 @@ public class SongLibraryController {
             switch(newValueTextField.getPromptText()) {
                 case "Name" -> {
                     if(!Library.allowEdit(prevSongName, prevArtistName, input, prevArtistName)) {
-                        // TODO: Display a popup message
+                        displayError(
+                                "Duplicate Song",
+                                "A song with this name and artist already exists in the library"
+                        );
                         return;
                     }
                     selectedSong.setName(input);
                 }
                 case "Artist" -> {
                     if(!Library.allowEdit(prevSongName, prevArtistName, prevSongName, input)) {
-                        // TODO: Display a popup message
+                        displayError(
+                                "Duplicate Song",
+                                "A song with this name and artist already exists in the library"
+                        );
                         return;
                     }
                     selectedSong.setArtist(input);
@@ -67,7 +75,10 @@ public class SongLibraryController {
                     try {
                         selectedSong.setYear(Integer.parseInt(input));
                     } catch (NumberFormatException exception) {
-                        // TODO: Display a popup message
+                        displayError(
+                                "Invalid year",
+                                "The year must only be comprised of numeric characters"
+                        );
                     }
                 }
                 default -> System.out.println("Something went wrong...");
@@ -90,5 +101,15 @@ public class SongLibraryController {
         detailsList.getItems().add("Artist:\u0000 " + selectedSong.getArtist());
         detailsList.getItems().add("Album:\u0000 " + selectedSong.getAlbum());
         detailsList.getItems().add("Year:\u0000 " + selectedSong.getYear());
+    }
+
+    private void displayError(String title, String content) {
+        Alert alert = new Alert(AlertType.ERROR);
+
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+
+        alert.showAndWait();
     }
 }
