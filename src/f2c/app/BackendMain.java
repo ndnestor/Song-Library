@@ -1,5 +1,25 @@
 package f2c.app;
-public class BackendMain {
+
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+
+public class BackendMain extends Application {
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/f2c/view/SongLibrary.fxml"));
+
+        BorderPane root = (BorderPane)loader.load();
+
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
+        primaryStage.show();
+    }
+
     public static void main(String[] args) {
         Song s1 = new Song("coolSong","elon");
         System.out.println(s1.getName());
@@ -10,6 +30,8 @@ public class BackendMain {
         MySongs.addSong("dsong2", "artist2");
         MySongs.delete("csong1","artist2");
         MySongs.printLibrary();
+
+        launch(args);
     }
 
 }
