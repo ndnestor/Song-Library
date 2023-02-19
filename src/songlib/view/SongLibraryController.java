@@ -96,6 +96,8 @@ public class SongLibraryController {
                     if(!displayConfirmation("Are you sure you want to delete this song?"))
                         return;
 
+                    int songIndex = songList.getSelectionModel().getSelectedIndex();
+
                     Library.delete(selectedSong.getName(), selectedSong.getArtist());
 
                     newValueTextField.setPromptText("Select a song and a property to edit");
@@ -103,9 +105,19 @@ public class SongLibraryController {
                     newValueTextField.setDisable(true);
 
                     updateSongList();
-                    showDetails(null);
 
-                    button.setDisable(true);
+                    if(songList.getItems().size() > songIndex + 1) {
+                        songList.getSelectionModel().select(songIndex);
+                        selectedSong = Library.Lib.get(songIndex);
+                    } else if(songIndex > 0) {
+                        songList.getSelectionModel().select(songIndex - 1);
+                        selectedSong = songFromString(songList.getSelectionModel().getSelectedItem());
+                    } else {
+                        selectedSong = null;
+                        button.setDisable(true);
+                    }
+
+                    showDetails(selectedSong);
                 }
                 case "Add" -> {
                     if(!displayConfirmation("Are you sure you want to add this song?"))
@@ -131,12 +143,9 @@ public class SongLibraryController {
 
                     updateSongList();
 
-                    int songIndex = songList
-                            .getItems()
-                            .indexOf(songName + " by\u0000 " + songArtist);
+                    int songIndex = getSongIndex(songName, songArtist);
 
                     songList.getSelectionModel().select(songIndex);
-
                     selectedSong = templateSong;
                     showDetails(selectedSong);
 
@@ -146,6 +155,10 @@ public class SongLibraryController {
                 }
             }
         });
+    }
+
+    private int getSongIndex(String songName, String artistName) {
+        return songList.getItems().indexOf(songName + " by \u0000 " + artistName);
     }
 
     private Song songFromString(String songString) {
@@ -255,9 +268,7 @@ public class SongLibraryController {
         updateSongList();
         showDetails(selectedSong);
 
-        int songIndex = songList
-                .getItems()
-                .indexOf(selectedSong.getName() + " by\u0000 " + selectedSong.getArtist());
+        int songIndex = getSongIndex(selectedSong.getName(), selectedSong.getArtist());
 
         if(songIndex > -1)
             songList.getSelectionModel().select(songIndex);
