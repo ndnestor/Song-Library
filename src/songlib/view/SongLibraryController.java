@@ -178,6 +178,8 @@ public class SongLibraryController {
         String input = newValueTextField.getText();
         String prevSongName = selectedSong.getName();
         String prevArtistName = selectedSong.getArtist();
+        String prevAlbumName = selectedSong.getAlbum();
+        int prevYear = selectedSong.getYear();
         switch(newValueTextField.getPromptText()) {
             case "Name" -> {
                 if(selectedSong.getName().equals(input))
@@ -197,7 +199,8 @@ public class SongLibraryController {
                     return;
                 }
 
-                selectedSong.setName(input);
+                //selectedSong.setName(input);
+                Library.editSong(prevSongName, prevArtistName, input, prevArtistName, prevAlbumName, prevYear);
             }
             case "Artist" -> {
                 if(selectedSong.getArtist().equals(input))
@@ -217,7 +220,8 @@ public class SongLibraryController {
                     return;
                 }
 
-                selectedSong.setArtist(input);
+                //selectedSong.setArtist(input);
+                Library.editSong(prevSongName, prevArtistName, prevSongName, input, prevAlbumName, prevYear);
             }
             case "Album" -> {
                 if(selectedSong.getAlbum().equals(input))
@@ -229,7 +233,8 @@ public class SongLibraryController {
                     return;
                 }
 
-                selectedSong.setAlbum(input);
+                //selectedSong.setAlbum(input);
+                Library.editSong(prevSongName, prevArtistName, prevSongName, prevArtistName, input, prevYear);
             }
             case "Year" -> {
                 if(String.valueOf(selectedSong.getYear()).equals(input))
@@ -254,7 +259,8 @@ public class SongLibraryController {
                     else
                         year = Integer.parseInt(input);
 
-                    selectedSong.setYear(year);
+                    //selectedSong.setYear(year);
+                    Library.editSong(prevSongName, prevAlbumName, prevSongName, prevAlbumName, prevAlbumName, year);
                 } catch (NumberFormatException exception) {
                     displayError(
                             "Invalid Year",

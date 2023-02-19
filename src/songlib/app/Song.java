@@ -27,40 +27,28 @@ public class Song implements Comparable<Song>{
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-        Library.writeFile();
-    }
+    public void setName(String name) { this.name = name; }
 
     // Getter and Setter methods for artist
     public String getArtist() {
         return artist;
     }
 
-    public void setArtist(String artist) {
-        this.artist = artist;
-        Library.writeFile();
-    }
+    public void setArtist(String artist) { this.artist = artist; }
 
     // Getter and Setter methods for album
     public String getAlbum() {
         return album;
     }
 
-    public void setAlbum(String album) {
-        this.album = album;
-        Library.writeFile();
-    }
+    public void setAlbum(String album) { this.album = album; }
 
     // Getter and Setter methods for year
     public int getYear() {
         return year;
     }
 
-    public void setYear(int year) {
-        this.year = year>=0?year:-year;
-        Library.writeFile();
-    }
+    public void setYear(int year) { this.year = year>=0?year:-year; }
 
     public int compareTo(Song song2){
         int songName = this.name.compareToIgnoreCase(song2.getName());

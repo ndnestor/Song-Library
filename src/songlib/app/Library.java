@@ -60,11 +60,13 @@ public class Library {
         delete(prevName,prevArtist);
         addSong(newName,newArtist);
         Collections.sort(Lib);
+        writeFile();
     }
     public static void editSong(String prevName, String prevArtist, String newName, String newArtist, String album, int year ){
         delete(prevName,prevArtist);
         addSong(newName,newArtist,album,year);
         Collections.sort(Lib);
+        writeFile();
     }
 
     public static Song getSong(int index){
