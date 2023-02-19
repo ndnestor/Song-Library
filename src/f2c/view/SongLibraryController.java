@@ -26,11 +26,15 @@ public class SongLibraryController {
 
         setTemplateSong();
 
+        // TODO: Remove these test songs
         Library.addSong("Song B", "Artist B", "Album B", 2022);
         Library.addSong("Song A", "Artist A", "Album A", 2023);
         Library.addSong("Song B", "Artist B", "Album B", 2022);
 
         updateSongList();
+
+        songList.getSelectionModel().selectFirst();
+        showDetails(Library.getSong(0));
 
         songList.setOnMouseClicked(mouseEvent -> {
             String selectedItem = songList.getSelectionModel().getSelectedItem();
@@ -48,10 +52,7 @@ public class SongLibraryController {
                 return;
             }
 
-            String[] parts = selectedItem.split(" by\u0000 ");
-            String songName = parts[0];
-            String artistName = parts[1];
-            showDetails(songName, artistName);
+            showDetails(songFromString(selectedItem));
 
             button.setDisable(false);
             button.setText("Delete");
@@ -139,6 +140,14 @@ public class SongLibraryController {
                 }
             }
         });
+    }
+
+    private Song songFromString(String songString) {
+        String[] parts = songString.split(" by\u0000 ");
+        String songName = parts[0];
+        String artistName = parts[1];
+
+        return Library.getSong(songName, artistName);
     }
 
     private void onNewValueTextFieldChanged() {
@@ -256,10 +265,6 @@ public class SongLibraryController {
         }
 
         songList.getItems().add(addSongText);
-    }
-
-    private void showDetails(String songName, String artistName) {
-        showDetails(Library.getSong(songName, artistName));
     }
 
     private void showDetails(Song song) {
