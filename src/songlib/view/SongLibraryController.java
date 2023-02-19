@@ -16,11 +16,12 @@ public class SongLibraryController {
     @FXML private TextField newValueTextField;
     @FXML private Button button;
 
+    private final String defaultNewValueTextFieldPrompt = "Select a song and a property to edit";
     private final String addSongText = "> Add song <";
 
+    private Song lastSelectedSong;
     private Song selectedSong;
     private Song templateSong;
-    private boolean displayingConfirmation;
 
     @FXML
     private void initialize() {
@@ -37,6 +38,12 @@ public class SongLibraryController {
         }
 
         songList.setOnMouseClicked(mouseEvent -> {
+            if(selectedSong != lastSelectedSong) {
+                newValueTextField.setPromptText(defaultNewValueTextFieldPrompt);
+                newValueTextField.setText("");
+                newValueTextField.setDisable(true);
+            }
+
             String selectedItem = songList.getSelectionModel().getSelectedItem();
 
             if(selectedItem == null) {
@@ -62,7 +69,7 @@ public class SongLibraryController {
             String selectedItem = detailsList.getSelectionModel().getSelectedItem();
 
             if(selectedItem == null) {
-                newValueTextField.setPromptText("Select a song and a property to edit");
+                newValueTextField.setPromptText(defaultNewValueTextFieldPrompt);
                 newValueTextField.setText("");
                 newValueTextField.setDisable(true);
                 return;
@@ -100,12 +107,13 @@ public class SongLibraryController {
 
                     Library.delete(selectedSong.getName(), selectedSong.getArtist());
 
-                    newValueTextField.setPromptText("Select a song and a property to edit");
+                    newValueTextField.setPromptText(defaultNewValueTextFieldPrompt);
                     newValueTextField.setText("");
                     newValueTextField.setDisable(true);
 
                     updateSongList();
 
+                    lastSelectedSong = selectedSong;
                     if(songList.getItems().size() > songIndex + 1) {
                         songList.getSelectionModel().select(songIndex);
                         selectedSong = Library.Lib.get(songIndex);
@@ -146,6 +154,7 @@ public class SongLibraryController {
                     int songIndex = getSongIndex(songName, songArtist);
 
                     songList.getSelectionModel().select(songIndex);
+                    lastSelectedSong = selectedSong;
                     selectedSong = templateSong;
                     showDetails(selectedSong);
 
@@ -199,7 +208,6 @@ public class SongLibraryController {
                     return;
                 }
 
-                //selectedSong.setName(input);
                 Library.editSong(prevSongName, prevArtistName, input, prevArtistName, prevAlbumName, prevYear);
             }
             case "Artist" -> {
@@ -220,7 +228,6 @@ public class SongLibraryController {
                     return;
                 }
 
-                //selectedSong.setArtist(input);
                 Library.editSong(prevSongName, prevArtistName, prevSongName, input, prevAlbumName, prevYear);
             }
             case "Album" -> {
@@ -233,7 +240,6 @@ public class SongLibraryController {
                     return;
                 }
 
-                //selectedSong.setAlbum(input);
                 Library.editSong(prevSongName, prevArtistName, prevSongName, prevArtistName, input, prevYear);
             }
             case "Year" -> {
@@ -259,7 +265,6 @@ public class SongLibraryController {
                     else
                         year = Integer.parseInt(input);
 
-                    //selectedSong.setYear(year);
                     Library.editSong(prevSongName, prevAlbumName, prevSongName, prevAlbumName, prevAlbumName, year);
                 } catch (NumberFormatException exception) {
                     displayError(
@@ -297,6 +302,7 @@ public class SongLibraryController {
     }
 
     private void showDetails(Song song) {
+        lastSelectedSong = selectedSong;
         selectedSong = song;
 
         detailsList.getItems().clear();
@@ -325,11 +331,6 @@ public class SongLibraryController {
     }
 
     private boolean displayConfirmation(String content) {
-        if(displayingConfirmation)
-            return true;
-
-        displayingConfirmation = true;
-
         Alert alert = new Alert(AlertType.CONFIRMATION);
 
         alert.setTitle("Confirmation");
@@ -337,8 +338,6 @@ public class SongLibraryController {
         alert.setContentText(content);
 
         Optional<ButtonType> result = alert.showAndWait();
-
-        displayingConfirmation = false;
 
         return result.get() == ButtonType.OK;
     }
