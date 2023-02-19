@@ -8,6 +8,8 @@ public class Song implements Comparable<Song>{
     public Song(String name, String artist){
         this.name = name;
         this.artist = artist;
+        this.album = "";
+        this.year = 0;
     }
     public Song(String name, String artist, String album, int year){
         this.name = name;

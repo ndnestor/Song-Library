@@ -111,7 +111,12 @@ public class SongLibraryController {
                 case "Album" -> selectedSong.setAlbum(input);
                 case "Year" -> {
                     try {
-                        selectedSong.setYear(Integer.parseInt(input));
+                        int year;
+                        if(input.equals(""))
+                            year = 0;
+                        else
+                            year = Integer.parseInt(input);
+                        selectedSong.setYear(year);
                     } catch (NumberFormatException exception) {
                         displayError(
                                 "Invalid Year",
@@ -206,7 +211,11 @@ public class SongLibraryController {
         detailsList.getItems().add("Name:\u0000 " + selectedSong.getName());
         detailsList.getItems().add("Artist:\u0000 " + selectedSong.getArtist());
         detailsList.getItems().add("Album:\u0000 " + selectedSong.getAlbum());
-        detailsList.getItems().add("Year:\u0000 " + selectedSong.getYear());
+        int year = selectedSong.getYear();
+        if(year == 0)
+            detailsList.getItems().add("Year:\u0000 ");
+        else
+            detailsList.getItems().add("Year:\u0000 " + selectedSong.getYear());
     }
 
     private void displayError(String title, String content) {
