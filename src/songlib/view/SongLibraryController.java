@@ -1,7 +1,7 @@
-package f2c.view;
+package songlib.view;
 
-import f2c.app.Library;
-import f2c.app.Song;
+import songlib.app.Library;
+import songlib.app.Song;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
