@@ -27,6 +27,7 @@ public class Song implements Comparable<Song>{
 
     public void setName(String name) {
         this.name = name;
+        Library.writeFile();
     }
 
     // Getter and Setter methods for artist
@@ -36,6 +37,7 @@ public class Song implements Comparable<Song>{
 
     public void setArtist(String artist) {
         this.artist = artist;
+        Library.writeFile();
     }
 
     // Getter and Setter methods for album
@@ -45,6 +47,7 @@ public class Song implements Comparable<Song>{
 
     public void setAlbum(String album) {
         this.album = album;
+        Library.writeFile();
     }
 
     // Getter and Setter methods for year
@@ -54,6 +57,7 @@ public class Song implements Comparable<Song>{
 
     public void setYear(int year) {
         this.year = year>=0?year:-year;
+        Library.writeFile();
     }
 
     public int compareTo(Song song2){

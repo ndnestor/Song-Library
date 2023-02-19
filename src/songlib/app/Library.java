@@ -27,6 +27,7 @@ public class Library {
             String artist1 = artist.replace("|","");
             Lib.add(new Song(name1.trim(),artist1.trim()));
             Collections.sort(Lib);
+            writeFile();
             return;
         }
         System.out.println("Duplicate Song");
@@ -38,12 +39,14 @@ public class Library {
             album = album.replace("|","");
             Lib.add(new Song(name.trim(),artist.trim(),album,year));
             Collections.sort(Lib);
+            writeFile();
             return;
         }
         System.out.println("Duplicate Song");
     }
     public static void delete(String name, String artist){
         Lib.removeIf(s -> s.getName().equalsIgnoreCase(name) && s.getArtist().equalsIgnoreCase(artist));
+        writeFile();
     }
 
     //check before editing

@@ -26,15 +26,13 @@ public class SongLibraryController {
 
         setTemplateSong();
 
-        // TODO: Remove these test songs
-        Library.addSong("Song B", "Artist B", "Album B", 2022);
-        Library.addSong("Song A", "Artist A", "Album A", 2023);
-        Library.addSong("Song B", "Artist B", "Album B", 2022);
-
         updateSongList();
 
-        songList.getSelectionModel().selectFirst();
-        showDetails(Library.getSong(0));
+        // NOTE: > 1 instead of > 0 because the song list includes the add song button
+        if(songList.getItems().size() > 1) {
+            songList.getSelectionModel().selectFirst();
+            showDetails(Library.getSong(0));
+        }
 
         songList.setOnMouseClicked(mouseEvent -> {
             String selectedItem = songList.getSelectionModel().getSelectedItem();
