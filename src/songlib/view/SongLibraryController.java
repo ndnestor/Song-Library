@@ -152,6 +152,8 @@ public class SongLibraryController {
         if(selectedSong == null)
             return;
 
+        boolean canDisplayConfirmation = selectedSong != templateSong;
+
         String input = newValueTextField.getText();
         String prevSongName = selectedSong.getName();
         String prevArtistName = selectedSong.getArtist();
@@ -160,7 +162,8 @@ public class SongLibraryController {
                 if(selectedSong.getName().equals(input))
                     return;
 
-                if(!displayConfirmation("Are you sure you want to change the name of this song?")) {
+                if(canDisplayConfirmation &&
+                        !displayConfirmation("Are you sure you want to change the name of this song?")) {
                     newValueTextField.setText(prevSongName);
                     return;
                 }
@@ -179,7 +182,8 @@ public class SongLibraryController {
                 if(selectedSong.getArtist().equals(input))
                     return;
 
-                if(!displayConfirmation("Are you sure you want to change the artist of this song?")) {
+                if(canDisplayConfirmation &&
+                        !displayConfirmation("Are you sure you want to change the artist of this song?")) {
                     newValueTextField.setText(prevArtistName);
                     return;
                 }
@@ -198,7 +202,8 @@ public class SongLibraryController {
                 if(selectedSong.getAlbum().equals(input))
                     return;
 
-                if(!displayConfirmation("Are you sure you want to change the album of this song?")) {
+                if(canDisplayConfirmation &&
+                        !displayConfirmation("Are you sure you want to change the album of this song?")) {
                     newValueTextField.setText(selectedSong.getAlbum());
                     return;
                 }
@@ -209,7 +214,8 @@ public class SongLibraryController {
                 if(String.valueOf(selectedSong.getYear()).equals(input))
                     return;
 
-                if(!displayConfirmation("Are you sure you want to change the year of this song?")) {
+                if(canDisplayConfirmation &&
+                        !displayConfirmation("Are you sure you want to change the year of this song?")) {
                     int year = selectedSong.getYear();
 
                     if(year == 0)
