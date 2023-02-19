@@ -167,7 +167,11 @@ public class SongLibraryController {
     }
 
     private int getSongIndex(String songName, String artistName) {
-        return songList.getItems().indexOf(songName + " by \u0000 " + artistName);
+        try {
+            return Library.Lib.indexOf(songFromString(songName + " by\u0000 " + artistName));
+        } catch (ArrayIndexOutOfBoundsException exception) {
+            return -1;
+        }
     }
 
     private Song songFromString(String songString) {
@@ -208,7 +212,7 @@ public class SongLibraryController {
                     return;
                 }
 
-                Library.editSong(prevSongName, prevArtistName, input, prevArtistName, prevAlbumName, prevYear);
+                selectedSong.setName(input);
             }
             case "Artist" -> {
                 if(selectedSong.getArtist().equals(input))
@@ -228,7 +232,7 @@ public class SongLibraryController {
                     return;
                 }
 
-                Library.editSong(prevSongName, prevArtistName, prevSongName, input, prevAlbumName, prevYear);
+                selectedSong.setArtist(input);
             }
             case "Album" -> {
                 if(selectedSong.getAlbum().equals(input))
@@ -240,7 +244,7 @@ public class SongLibraryController {
                     return;
                 }
 
-                Library.editSong(prevSongName, prevArtistName, prevSongName, prevArtistName, input, prevYear);
+                selectedSong.setAlbum(input);
             }
             case "Year" -> {
                 if(String.valueOf(selectedSong.getYear()).equals(input))
@@ -265,7 +269,7 @@ public class SongLibraryController {
                     else
                         year = Integer.parseInt(input);
 
-                    Library.editSong(prevSongName, prevAlbumName, prevSongName, prevAlbumName, prevAlbumName, year);
+                    selectedSong.setYear(year);
                 } catch (NumberFormatException exception) {
                     displayError(
                             "Invalid Year",
@@ -292,6 +296,8 @@ public class SongLibraryController {
     }
 
     private void updateSongList() {
+        Library.sort();
+
         songList.getItems().clear();
 
         for(Song song : Library.Lib) {

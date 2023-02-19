@@ -57,16 +57,14 @@ public class Library {
     }
 
     public static void editSong(String prevName, String prevArtist, String newName, String newArtist ){
-        delete(prevName,prevArtist);
-        addSong(newName,newArtist);
-        Collections.sort(Lib);
-        writeFile();
+        editSong(prevName, prevArtist, newName, newArtist, "", 0);
     }
     public static void editSong(String prevName, String prevArtist, String newName, String newArtist, String album, int year ){
         delete(prevName,prevArtist);
         addSong(newName,newArtist,album,year);
+    }
+    public static void sort() {
         Collections.sort(Lib);
-        writeFile();
     }
 
     public static Song getSong(int index){
