@@ -91,6 +91,9 @@ public class SongLibraryController {
         button.setOnAction(actionEvent -> {
             switch(button.getText()) {
                 case "Delete" -> {
+                    if(!displayConfirmation("Are you sure you want to delete this song?"))
+                        return;
+
                     Library.delete(selectedSong.getName(), selectedSong.getArtist());
 
                     newValueTextField.setPromptText("Select a song and a property to edit");
@@ -103,6 +106,9 @@ public class SongLibraryController {
                     button.setDisable(true);
                 }
                 case "Add" -> {
+                    if(!displayConfirmation("Are you sure you want to add this song?"))
+                        return;
+
                     String songName = templateSong.getName();
                     String songArtist = templateSong.getArtist();
 
