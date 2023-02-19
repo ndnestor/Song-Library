@@ -19,7 +19,7 @@
                   <TextField fx:id="newValueTextField" disable="true" promptText="Select a song and a property to edit" />
               </items>
             </SplitPane>
-            <Button fx:id="button" disable="true" mnemonicParsing="false" text="Delete" />
+            <Button fx:id="button" mnemonicParsing="false" text="Delete" />
         </items>
       </SplitPane>
    </center>
