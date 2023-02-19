@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
@@ -12,8 +13,13 @@
    <center>
       <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
-            <ListView fx:id="detailsList" prefHeight="200.0" prefWidth="200.0" />
-            <TextField fx:id="newValueTextField" promptText="New value" />
+            <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+              <items>
+                  <ListView fx:id="detailsList" prefHeight="200.0" prefWidth="200.0" />
+                  <TextField fx:id="newValueTextField" disable="true" promptText="Select a song and a property to edit" />
+              </items>
+            </SplitPane>
+            <Button fx:id="button" disable="true" mnemonicParsing="false" text="Delete" />
         </items>
       </SplitPane>
    </center>
