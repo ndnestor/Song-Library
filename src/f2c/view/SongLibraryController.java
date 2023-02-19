@@ -80,54 +80,13 @@ public class SongLibraryController {
             newValueTextField.setDisable(false);
         });
 
+        newValueTextField.focusedProperty().addListener(((observable, oldValue, newValue) -> {
+            if(!newValue)
+                onNewValueTextFieldChanged();
+        }));
+
         newValueTextField.setOnAction(actionEvent -> {
-            if(selectedSong == null)
-                return;
-
-            String input = newValueTextField.getText();
-            String prevSongName = selectedSong.getName();
-            String prevArtistName = selectedSong.getArtist();
-            switch(newValueTextField.getPromptText()) {
-                case "Name" -> {
-                    if(!Library.allowEdit(prevSongName, prevArtistName, input, prevArtistName)) {
-                        displayError(
-                                "Duplicate Song",
-                                "A song with this name and artist already exists in the library"
-                        );
-                        return;
-                    }
-                    selectedSong.setName(input);
-                }
-                case "Artist" -> {
-                    if(!Library.allowEdit(prevSongName, prevArtistName, prevSongName, input)) {
-                        displayError(
-                                "Duplicate Song",
-                                "A song with this name and artist already exists in the library"
-                        );
-                        return;
-                    }
-                    selectedSong.setArtist(input);
-                }
-                case "Album" -> selectedSong.setAlbum(input);
-                case "Year" -> {
-                    try {
-                        int year;
-                        if(input.equals(""))
-                            year = 0;
-                        else
-                            year = Integer.parseInt(input);
-                        selectedSong.setYear(year);
-                    } catch (NumberFormatException exception) {
-                        displayError(
-                                "Invalid Year",
-                                "The year must only be comprised of numeric characters"
-                        );
-                    }
-                }
-                default -> System.out.println("Something went wrong...");
-            }
-
-            showDetails(selectedSong);
+            onNewValueTextFieldChanged();
         });
 
         button.setOnAction(actionEvent -> {
@@ -180,6 +139,56 @@ public class SongLibraryController {
                 }
             }
         });
+    }
+
+    private void onNewValueTextFieldChanged() {
+        if(selectedSong == null)
+            return;
+
+        String input = newValueTextField.getText();
+        String prevSongName = selectedSong.getName();
+        String prevArtistName = selectedSong.getArtist();
+        switch(newValueTextField.getPromptText()) {
+            case "Name" -> {
+                if(!Library.allowEdit(prevSongName, prevArtistName, input, prevArtistName)) {
+                    displayError(
+                            "Duplicate Song",
+                            "A song with this name and artist already exists in the library"
+                    );
+                    return;
+                }
+                selectedSong.setName(input);
+            }
+            case "Artist" -> {
+                if(!Library.allowEdit(prevSongName, prevArtistName, prevSongName, input)) {
+                    displayError(
+                            "Duplicate Song",
+                            "A song with this name and artist already exists in the library"
+                    );
+                    return;
+                }
+                selectedSong.setArtist(input);
+            }
+            case "Album" -> selectedSong.setAlbum(input);
+            case "Year" -> {
+                try {
+                    int year;
+                    if(input.equals(""))
+                        year = 0;
+                    else
+                        year = Integer.parseInt(input);
+                    selectedSong.setYear(year);
+                } catch (NumberFormatException exception) {
+                    displayError(
+                            "Invalid Year",
+                            "The year must only be comprised of numeric characters"
+                    );
+                }
+            }
+            default -> System.out.println("Something went wrong...");
+        }
+
+        showDetails(selectedSong);
     }
 
     private void setTemplateSong() {
