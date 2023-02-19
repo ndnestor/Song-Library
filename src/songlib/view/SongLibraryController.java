@@ -1,5 +1,6 @@
-// Created by Nathan Nestor and Abdullah Alam
-
+/**
+ * @author Abdullah Alam, Nathan Nestor
+ */
 package songlib.view;
 
 import songlib.app.Library;

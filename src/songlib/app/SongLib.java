@@ -1,5 +1,6 @@
-// Created by Abdullah Alam and Nathan Nestor
-
+/**
+ * @author Abdullah Alam, Nathan Nestor
+ */
 package songlib.app;
 
 import javafx.application.Application;

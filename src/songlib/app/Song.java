@@ -1,5 +1,6 @@
-// Created by Abdullah Alam and Nathan Nestor
-
+/**
+ * @author Abdullah Alam, Nathan Nestor
+ */
 package songlib.app;
 public class Song implements Comparable<Song>{
     private String name;
