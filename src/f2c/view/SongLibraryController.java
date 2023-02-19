@@ -3,11 +3,10 @@ package f2c.view;
 import f2c.app.Library;
 import f2c.app.Song;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+
+import java.util.Optional;
 
 public class SongLibraryController {
     @FXML private ListView<String> songList;
@@ -19,6 +18,7 @@ public class SongLibraryController {
 
     private Song selectedSong;
     private Song templateSong;
+    private boolean displayingConfirmation;
 
     @FXML
     private void initialize() {
@@ -86,7 +86,7 @@ public class SongLibraryController {
         }));
 
         newValueTextField.setOnAction(actionEvent -> {
-            onNewValueTextFieldChanged();
+            //onNewValueTextFieldChanged();
         });
 
         button.setOnAction(actionEvent -> {
@@ -150,6 +150,14 @@ public class SongLibraryController {
         String prevArtistName = selectedSong.getArtist();
         switch(newValueTextField.getPromptText()) {
             case "Name" -> {
+                if(selectedSong.getName().equals(input))
+                    return;
+
+                if(!displayConfirmation("Are you sure you want to change the name of this song?")) {
+                    newValueTextField.setText(prevSongName);
+                    return;
+                }
+
                 if(!Library.allowEdit(prevSongName, prevArtistName, input, prevArtistName)) {
                     displayError(
                             "Duplicate Song",
@@ -157,9 +165,18 @@ public class SongLibraryController {
                     );
                     return;
                 }
+
                 selectedSong.setName(input);
             }
             case "Artist" -> {
+                if(selectedSong.getArtist().equals(input))
+                    return;
+
+                if(!displayConfirmation("Are you sure you want to change the artist of this song?")) {
+                    newValueTextField.setText(prevArtistName);
+                    return;
+                }
+
                 if(!Library.allowEdit(prevSongName, prevArtistName, prevSongName, input)) {
                     displayError(
                             "Duplicate Song",
@@ -167,16 +184,42 @@ public class SongLibraryController {
                     );
                     return;
                 }
+
                 selectedSong.setArtist(input);
             }
-            case "Album" -> selectedSong.setAlbum(input);
+            case "Album" -> {
+                if(selectedSong.getAlbum().equals(input))
+                    return;
+
+                if(!displayConfirmation("Are you sure you want to change the album of this song?")) {
+                    newValueTextField.setText(selectedSong.getAlbum());
+                    return;
+                }
+
+                selectedSong.setAlbum(input);
+            }
             case "Year" -> {
+                if(String.valueOf(selectedSong.getYear()).equals(input))
+                    return;
+
+                if(!displayConfirmation("Are you sure you want to change the year of this song?")) {
+                    int year = selectedSong.getYear();
+
+                    if(year == 0)
+                        newValueTextField.setText("");
+                    else
+                        newValueTextField.setText(String.valueOf(selectedSong.getYear()));
+
+                    return;
+                }
+
                 try {
                     int year;
                     if(input.equals(""))
                         year = 0;
                     else
                         year = Integer.parseInt(input);
+
                     selectedSong.setYear(year);
                 } catch (NumberFormatException exception) {
                     displayError(
@@ -188,7 +231,17 @@ public class SongLibraryController {
             default -> System.out.println("Something went wrong...");
         }
 
+        updateSongList();
         showDetails(selectedSong);
+
+        int songIndex = songList
+                .getItems()
+                .indexOf(selectedSong.getName() + " by\u0000 " + selectedSong.getArtist());
+
+        if(songIndex > -1)
+            songList.getSelectionModel().select(songIndex);
+        else
+            songList.getSelectionModel().selectLast();
     }
 
     private void setTemplateSong() {
@@ -235,5 +288,24 @@ public class SongLibraryController {
         alert.setContentText(content);
 
         alert.showAndWait();
+    }
+
+    private boolean displayConfirmation(String content) {
+        if(displayingConfirmation)
+            return true;
+
+        displayingConfirmation = true;
+
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+
+        alert.setTitle("Confirmation");
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        displayingConfirmation = false;
+
+        return result.get() == ButtonType.OK;
     }
 }
