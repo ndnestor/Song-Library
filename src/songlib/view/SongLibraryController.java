@@ -1,3 +1,5 @@
+// Created by Nathan Nestor and Abdullah Alam
+
 package songlib.view;
 
 import songlib.app.Library;
